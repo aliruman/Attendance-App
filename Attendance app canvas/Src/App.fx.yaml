@@ -1,0 +1,79 @@
+App As appinfo:
+    BackEnabled: =false
+    OnStart: |
+        =If(
+            User().Email = "RohanRana@Alankaeon789.onmicrosoft.com",
+            Set(
+                IsAdmin,
+                true
+            ),
+            Set(
+                IsAdmin,
+                false
+            )
+        );
+        If(
+            IsAdmin,
+            ClearCollect(
+                NavGallery,
+                Table(
+                    {
+                        Title: "Approve Login's",
+                        Screen: Approve,
+                        Icon: Icon.DocumentWithContent,
+                        ID: 1
+                    },
+                    {
+                        Title: "Approved Request",
+                        Screen: 'Approved Request',
+                        Icon: Icon.DocumentWithContent,
+                        ID: 2
+                    }
+                )
+            ),
+            ClearCollect(
+                NavGallery,
+                Table(
+                    {
+                        Title: "Home",
+                        Screen: Home,
+                        Icon: Icon.Home,
+                        ID: 1
+                    },
+                    {
+                        Title: "Login",
+                        Screen: Login,
+                        Icon: Icon.DockRight,
+                        ID: 2
+                    },
+                    {
+                        Title: "Logout",
+                        Screen: Logout,
+                        Icon: Icon.DockLeft,
+                        ID: 3
+                    },
+                    {
+                        Title: "All logins",
+                        Screen: 'All Logins',
+                        Icon: Icon.ListScrollWatchlist,
+                        ID: 4
+                    }
+                )
+            )
+        );
+        Set(
+            CurrentTime,
+            Text(
+                Now(),
+                DateTimeFormat.LongTime
+            )
+        );
+        ClearCollect(
+            UserRecord,
+            Filter(
+                Clockin,
+                Title = User().FullName && IsToday(Date)
+            )
+        );
+    StartScreen: =If(Param("Navigate")="Approve"&&Param("Admin")="true",Approve,Home)
+

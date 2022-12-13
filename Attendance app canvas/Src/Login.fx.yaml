@@ -1,0 +1,222 @@
+Login As screen:
+    Fill: =RGBA(204, 204, 204, 1)
+    OnVisible: |-
+        =Refresh(Clockin);
+        Set(Cammode,Blank());
+        ClearCollect(UserRecord,Filter(Clockin,Title=User().FullName && IsToday(Date)));
+        Set(Menuwidth,false)
+
+    Image16 As image:
+        Height: =768
+        Image: ='pic for att (2)'
+        ImagePosition: =ImagePosition.Fill
+        Width: =1366
+        ZIndex: =1
+
+    "Gallery3 As gallery.'BrowseLayout_Vertical_OneTextVariant_ver4.0'":
+        Fill: =RGBA(230, 230, 230, 1)
+        Height: =298
+        Items: =NavGallery
+        Layout: =Layout.Vertical
+        OnSelect: =Navigate(ThisItem.Screen)
+        TemplatePadding: =0
+        TemplateSize: =74
+        Visible: =Menuwidth
+        Width: =215
+        X: =29
+        Y: =164
+        ZIndex: =2
+
+        Separator3 As rectangle:
+            Fill: =RGBA(204, 204, 204, 1)
+            Height: =1
+            OnSelect: =Select(Parent)
+            Width: =Parent.TemplateWidth
+            Y: =Parent.TemplateHeight - 1
+            ZIndex: =3
+
+        Label8 As label:
+            FontWeight: =FontWeight.Bold
+            Height: =41
+            OnSelect: =Select(Parent)
+            Size: =12
+            Text: =ThisItem.Title
+            Width: =128
+            X: =87
+            Y: =15
+            ZIndex: =4
+
+        Icon5 As icon.Add:
+            Color: =RGBA(0, 0, 0, 1)
+            Height: =40
+            Icon: =ThisItem.Icon
+            OnSelect: =ThisItem.Title
+            Width: =40
+            X: =31
+            Y: =14
+            ZIndex: =5
+
+    "'Menu icon_1' As icon.Hamburger":
+        Color: =RGBA(230, 230, 230, 1)
+        Height: =73
+        Icon: =Icon.Hamburger
+        OnSelect: |-
+            =Set(Menuwidth,!Menuwidth);
+            //If(Menuwidth,;
+        Width: =45
+        X: =29
+        Y: =98
+        ZIndex: =3
+
+    Icon2_1 As icon.Reload:
+        Color: =RGBA(230, 230, 230, 1)
+        Height: =33
+        Icon: =Icon.Reload
+        OnSelect: =Refresh(Clockin);
+        Width: =33
+        X: =1117
+        Y: =37
+        ZIndex: =4
+
+    Label4_1 As label:
+        Align: =Align.Center
+        Color: =RGBA(102, 182, 227, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =42
+        Size: =22
+        Text: =If(Hour(Now())<12, "Good Morning, ", Hour(Now())<17, "Good Afternoon, ", "Good evening, ")&User().FullName
+        Width: =452
+        X: =464
+        Y: =122
+        ZIndex: =5
+
+    Label3_1 As label:
+        Color: =RGBA(230, 230, 230, 1)
+        FontWeight: =FontWeight.Semibold
+        Height: =42
+        Size: =15
+        Text: =Text(Now(),DateTimeFormat.LongDate)
+        Width: =320
+        X: =594
+        Y: =37
+        ZIndex: =6
+
+    "'Calendar icon_1' As icon.CalendarBlank":
+        Color: =RGBA(230, 230, 230, 1)
+        Height: =37
+        HoverBorderColor: =//ColorFade(Self.BorderColor, 20%)
+        Icon: =Icon.CalendarBlank
+        Width: =35
+        X: =550
+        Y: =38
+        ZIndex: =7
+
+    Image7 As image:
+        Fill: =RGBA(230, 230, 230, 1)
+        Height: =79
+        Image: ='Alankaeon Logo'
+        RadiusBottomLeft: =30
+        RadiusBottomRight: =30
+        RadiusTopLeft: =30
+        RadiusTopRight: =30
+        Width: =297
+        X: =14
+        Y: =14
+        ZIndex: =8
+
+    Camera1 As camera:
+        Camera: |-
+            =//Dropdown1.Selected.Id
+            Cammode
+        Height: =331
+        StreamRate: =100
+        Width: =431
+        X: =474
+        Y: =209
+        ZIndex: =9
+
+    Icon1 As icon.Camera:
+        Color: =RGBA(230, 230, 230, 1)
+        Height: =40
+        Icon: =Icon.Camera
+        OnSelect: =If(Cammode=0,Set(Cammode,1),Set(Cammode,0))
+        Width: =40
+        X: =465
+        Y: =567
+        ZIndex: =10
+
+    Label2 As label:
+        Color: =RGBA(230, 230, 230, 1)
+        FontWeight: =FontWeight.Semibold
+        Height: =33
+        Size: =15
+        Text: ="Hello,"&User().FullName
+        Width: =188
+        X: =1163
+        Y: =37
+        ZIndex: =11
+
+    Button1 As button:
+        DisplayMode: |-
+            =If(CountRows(UserRecord)>0,DisplayMode.Disabled,
+            DisplayMode.Edit)
+        OnSelect: |-
+            =Set(varTakenPhoto,Camera1.Stream);
+            If(IsBlank(varTakenPhoto),Notify("Please Adjust your camera and try again",NotificationType.Error),
+            Patch(Clockin,Defaults(Clockin),{Title:User().FullName,'Login location':BingMaps.GetLocationByPoint(Location.Latitude,Location.Longitude).name,'Login time':Now(),Date:Today(),'Login image':varTakenPhoto,Manager:{
+            Claims: Concatenate(
+            "i:0#.f|membership|",
+            Office365Users.Manager(First(Office365Users.SearchUser({searchTerm:User().Email, top: 100})).Id).Mail
+             // Person email
+            ),
+            Department: "",
+            DisplayName:Office365Users.Manager(First(Office365Users.SearchUser({searchTerm:User().Email, top: 100})).Id).DisplayName,
+            Email:Office365Users.Manager(First(Office365Users.SearchUser({searchTerm:User().Email, top: 100})).Id).Mail, // Person email
+            JobTitle: "",
+            Picture: ""}}));
+            Set(Cammode,Blank());
+            Navigate('All Logins');
+        RadiusBottomLeft: =20
+        RadiusBottomRight: =20
+        RadiusTopLeft: =20
+        RadiusTopRight: =20
+        Text: ="Login"
+        Width: =385
+        X: =520
+        Y: =567
+        ZIndex: =12
+
+    Button3 As button:
+        OnSelect: |-
+            =If(User().Email="UditArora@Alankaeon789.onmicrosoft.com",Set(IsAdmin,true),Set(IsAdmin,false));
+            If(IsAdmin,ClearCollect(NavGallery,Table({Title:"Home",Screen:Home,Icon:Icon.Home,ID:1},{Title:"Login",Screen:Login,Icon:Icon.DockRight,ID:2},{Title:"Logout",Screen:Logout,Icon:Icon.DockLeft,ID:3},{Title:"All logins",Screen:'All Logins',Icon:Icon.ListScrollWatchlist,ID:4},{Title:"Approve Login's",Screen:Approve,Icon:Icon.DocumentWithContent,ID:5})),ClearCollect(NavGallery,Table({Title:"Home",Screen:Home,Icon:Icon.Home,ID:1},{Title:"Login",Screen:Login,Icon:Icon.DockRight,ID:2},{Title:"Logout",Screen:Logout,Icon:Icon.DockLeft,ID:3},{Title:"All logins",Screen:'All Logins',Icon:Icon.ListScrollWatchlist,ID:4})))
+        Text: ="Button"
+        Visible: =false
+        Width: =85
+        X: =1281
+        Y: =728
+        ZIndex: =13
+
+    Label6 As label:
+        Color: =RGBA(230, 230, 230, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =51
+        Size: =25
+        Text: |-
+            =//Text(Now(),DateTimeFormat.ShortTime)
+            CurrentTime
+        Width: =229
+        X: =1137
+        Y: =717
+        ZIndex: =15
+
+    Timer1_1 As timer:
+        AutoStart: =true
+        Duration: =1000
+        OnTimerEnd: =Set(CurrentTime,Text(Now(),DateTimeFormat.LongTime))
+        Repeat: =true
+        Visible: =false
+        X: =290
+        Y: =168
+        ZIndex: =16
+

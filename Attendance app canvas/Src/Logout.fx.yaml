@@ -1,0 +1,228 @@
+Logout As screen:
+    Fill: =RGBA(204, 204, 204, 1)
+    OnVisible: |-
+        =Refresh(Clockin);
+        Set(Menuwidth,false)
+
+    Image17 As image:
+        Height: =768
+        Image: ='pic for att (2)'
+        ImagePosition: =ImagePosition.Fill
+        Width: =1366
+        ZIndex: =1
+
+    "'Menu icon_2' As icon.Hamburger":
+        Color: =RGBA(230, 230, 230, 1)
+        Height: =73
+        Icon: =Icon.Hamburger
+        OnSelect: =Set(Menuwidth,!Menuwidth);
+        Width: =45
+        X: =29
+        Y: =98
+        ZIndex: =2
+
+    Icon2_2 As icon.Reload:
+        Color: =RGBA(230, 230, 230, 1)
+        Height: =33
+        Icon: =Icon.Reload
+        OnSelect: =Refresh(Clockin);
+        Width: =33
+        X: =1126
+        Y: =37
+        ZIndex: =3
+
+    Label4_2 As label:
+        Align: =Align.Center
+        Color: =RGBA(102, 182, 227, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =42
+        Size: =22
+        Text: =If(Hour(Now())<12, "Good Morning, ", Hour(Now())<17, "Good Afternoon, ", "Good evening, ")&User().FullName
+        Width: =452
+        X: =464
+        Y: =122
+        ZIndex: =4
+
+    Label3_2 As label:
+        Color: =RGBA(230, 230, 230, 1)
+        FontWeight: =FontWeight.Semibold
+        Height: =42
+        Size: =15
+        Text: =Text(Now(),DateTimeFormat.LongDate)
+        Width: =320
+        X: =594
+        Y: =37
+        ZIndex: =5
+
+    "'Calendar icon_2' As icon.CalendarBlank":
+        Color: =RGBA(230, 230, 230, 1)
+        Height: =37
+        HoverBorderColor: =//ColorFade(Self.BorderColor, 20%)
+        Icon: =Icon.CalendarBlank
+        Width: =35
+        X: =550
+        Y: =38
+        ZIndex: =6
+
+    Image7_1 As image:
+        Fill: =RGBA(230, 230, 230, 1)
+        Height: =79
+        Image: ='Alankaeon Logo'
+        RadiusBottomLeft: =30
+        RadiusBottomRight: =30
+        RadiusTopLeft: =30
+        RadiusTopRight: =30
+        Width: =297
+        X: =14
+        Y: =14
+        ZIndex: =7
+
+    Camera1_1 As camera:
+        Camera: |-
+            =//Dropdown1.Selected.Id
+            Cammode
+        Height: =331
+        StreamRate: =100
+        Width: =431
+        X: =474
+        Y: =209
+        ZIndex: =8
+
+    Icon1_1 As icon.Camera:
+        Color: =RGBA(230, 230, 230, 1)
+        Height: =40
+        Icon: =Icon.Camera
+        OnSelect: =If(Cammode=0,Set(Cammode,1),Set(Cammode,0))
+        Width: =40
+        X: =465
+        Y: =567
+        ZIndex: =9
+
+    Label2_1 As label:
+        Color: =RGBA(230, 230, 230, 1)
+        FontWeight: =FontWeight.Semibold
+        Height: =33
+        Size: =15
+        Text: ="Hello,"&User().FullName
+        Width: =188
+        X: =1163
+        Y: =37
+        ZIndex: =10
+
+    Button1_1 As button:
+        OnSelect: |-
+            =If(!IsBlank(SelectedClockedIn),
+                Set(varTakenPhoto,Camera1_1.Stream);
+            Set(WorkedHours,RoundUp(DateDiff(LookUp(Clockin,ID=SelectedClockedIn).'Login time',Now(),Minutes)/60,3)&"  "&"Hours");
+            Set(varAttachment,JSON(Image10.Image,IncludeBinaryData));
+            Set(varBase64,Mid(varAttachment,Find(",",varAttachment)+1,Len(varAttachment)-Find(",",varAttachment)-1));
+            If(!IsBlank(varTakenPhoto),
+            Patch(Clockin,LookUp(Clockin,ID=SelectedClockedIn),{'Logout Image':varTakenPhoto,'Logout Location':BingMaps.GetLocationByPoint(Location.Latitude,Location.Longitude).name,'Logout time':Now(),'Hours Worked':WorkedHours});
+            Office365Outlook.SendEmailV2(LookUp(Clockin,ID=SelectedClockedIn).Manager.Email&";RohanRana00@alankaeon789.onmicrosoft.com","TimeSheet Approval For user:"&LookUp(Clockin,ID=SelectedClockedIn).Title,"<br>Hi,<br>"&LookUp(Clockin,ID=SelectedClockedIn).Manager.DisplayName&"<br><br>Please Approve the time sheet for the user :    "&LookUp(Clockin,ID=SelectedClockedIn).Title&"<br><br><table border=2px>
+              <tr style='background-color:Black;'>
+              <th style='color:white;'>Fields</th>
+              <th style='color:white;'>Description</th></tr>
+              <tr><td>Requester</td>
+              <td>"&User().FullName&"</td></tr>
+              <tr><td>Login Time</td>
+              <td>"&LookUp(Clockin,ID=SelectedClockedIn).'Login time'&"</td></tr>
+              <tr><td>Login Location</td>
+              <td>"&LookUp(Clockin,ID=SelectedClockedIn).'Login location'&"</td></tr>
+              <tr><td>Login Image</td>
+              <td><img src="&varAttachment&" width=100px height=100px></td></tr>
+              <tr><td>Logout Time</td>
+              <td>"&Now()&"</td></tr>
+              <tr><td>Logout Location</td>
+              <td>"&BingMaps.GetLocationByPoint(Location.Latitude,Location.Longitude).name&"</td></tr>
+              <tr><td>Logout Image</td>
+              <td><img src="&varTakenPhoto&" width=100px height=100px></td></tr>
+              <tr><td>Hours Worked</td>
+              <td>"&WorkedHours&"</td></tr>
+              </table><br><br><br>
+              <a href=https://apps.powerapps.com/play/e/default-f2c6769c-5005-42ae-b64b-bfd1758bc7e2/a/2680799e-44cd-4adf-90c7-1b220fa6991a?tenantId=f2c6769c-5005-42ae-b64b-bfd1758bc7e2&Navigate=Approve&ID="&SelectedClockedIn&"&Admin=true> Click Here to Approve Timesheet</a>");Navigate(Home)
+              ,Notify("Please Adjust your Camera and try again",NotificationType.Error))
+              ,Notify("Please Select the record from all logins to logout"));
+            Set(SelectedClockedIn,Blank());
+        RadiusBottomLeft: =20
+        RadiusBottomRight: =20
+        RadiusTopLeft: =20
+        RadiusTopRight: =20
+        Text: ="Logout"
+        Width: =385
+        X: =520
+        Y: =567
+        ZIndex: =11
+
+    "Gallery3_1 As gallery.'BrowseLayout_Vertical_OneTextVariant_ver4.0'":
+        Fill: =RGBA(230, 230, 230, 1)
+        Height: =298
+        Items: =NavGallery
+        Layout: =Layout.Vertical
+        OnSelect: =Navigate(ThisItem.Screen)
+        TemplatePadding: =0
+        TemplateSize: =74
+        Visible: =Menuwidth
+        Width: =215
+        X: =29
+        Y: =164
+        ZIndex: =12
+
+        Separator3_1 As rectangle:
+            Fill: =RGBA(204, 204, 204, 1)
+            Height: =1
+            OnSelect: =Select(Parent)
+            Width: =Parent.TemplateWidth
+            Y: =Parent.TemplateHeight - 1
+            ZIndex: =3
+
+        Label8_1 As label:
+            FontWeight: =FontWeight.Bold
+            Height: =41
+            OnSelect: =Select(Parent)
+            Size: =12
+            Text: =ThisItem.Title
+            Width: =128
+            X: =87
+            Y: =15
+            ZIndex: =4
+
+        Icon5_1 As icon.Add:
+            Color: =RGBA(0, 0, 0, 1)
+            Height: =40
+            Icon: =ThisItem.Icon
+            OnSelect: =ThisItem.Title
+            Width: =40
+            X: =31
+            Y: =14
+            ZIndex: =5
+
+    Label11 As label:
+        Color: =RGBA(230, 230, 230, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =48
+        Size: =25
+        Text: |-
+            =//Text(Now(),DateTimeFormat.ShortTime)
+            CurrentTime
+        Width: =229
+        X: =1137
+        Y: =720
+        ZIndex: =13
+
+    Image10 As image:
+        Image: =LookUp(Clockin,ID=SelectedClockedIn).'Login image'
+        Visible: =false
+        X: =933
+        Y: =217
+        ZIndex: =15
+
+    Timer1_2 As timer:
+        AutoStart: =true
+        Duration: =1000
+        OnTimerEnd: =Set(CurrentTime,Text(Now(),DateTimeFormat.LongTime))
+        Repeat: =true
+        Visible: =false
+        X: =290
+        Y: =168
+        ZIndex: =16
+

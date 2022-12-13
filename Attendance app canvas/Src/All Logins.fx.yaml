@@ -1,0 +1,142 @@
+"'All Logins' As screen":
+    OnVisible: |-
+        =Refresh(Clockin);
+        Set(Menuwidth,false)
+
+    Image2 As image:
+        Height: =768
+        Image: ='pic for att (3)'
+        ImagePosition: =ImagePosition.Fill
+        Width: =1366
+        ZIndex: =1
+
+    Gallery1 As gallery.galleryVertical:
+        Height: =584
+        Items: =Filter(Clockin,IsBlank('Logout time')&&IsToday(Date))
+        Layout: =Layout.Vertical
+        TemplateSize: =299
+        Width: =1325
+        WrapCount: =3
+        X: =41
+        Y: =183
+        ZIndex: =2
+
+        Image3 As image:
+            Height: =192
+            Image: =ThisItem.'Login image'
+            OnSelect: =If(ThisItem.Title=User().FullName || IsAdmin,Set(SelectedClockedIn,ThisItem.ID);Navigate(Logout),Notify("Please Select your record only"))
+            Width: =278
+            X: =39
+            Y: =21
+            ZIndex: =1
+
+        Label7 As label:
+            Align: =Align.Center
+            Color: =RGBA(230, 230, 230, 1)
+            FontWeight: =FontWeight.Bold
+            Height: =46
+            OnSelect: =If(ThisItem.Title=User().FullName || IsAdmin,Set(SelectedClockedIn,ThisItem.ID);Navigate(Logout),Notify("Please Select your record only"))
+            Size: =15
+            Text: =ThisItem.Title
+            Width: =281
+            X: =29
+            Y: =242
+            ZIndex: =2
+
+    Image7_2 As image:
+        Fill: =RGBA(230, 230, 230, 1)
+        Height: =79
+        Image: ='Alankaeon Logo'
+        RadiusBottomLeft: =30
+        RadiusBottomRight: =30
+        RadiusTopLeft: =30
+        RadiusTopRight: =30
+        Width: =297
+        X: =14
+        Y: =14
+        ZIndex: =3
+
+    "'Menu icon_3' As icon.Hamburger":
+        Color: =RGBA(230, 230, 230, 1)
+        Height: =73
+        Icon: =Icon.Hamburger
+        OnSelect: =Set(Menuwidth,!Menuwidth);
+        Width: =45
+        X: =29
+        Y: =98
+        ZIndex: =4
+
+    "Gallery3_2 As gallery.'BrowseLayout_Vertical_OneTextVariant_ver4.0'":
+        Fill: =RGBA(230, 230, 230, 1)
+        Height: =298
+        Items: =NavGallery
+        Layout: =Layout.Vertical
+        OnSelect: =Navigate(ThisItem.Screen)
+        TemplatePadding: =0
+        TemplateSize: =74
+        Visible: =Menuwidth
+        Width: =215
+        X: =29
+        Y: =164
+        ZIndex: =5
+
+        Separator3_2 As rectangle:
+            Fill: =RGBA(204, 204, 204, 1)
+            Height: =1
+            OnSelect: =Select(Parent)
+            Width: =Parent.TemplateWidth
+            Y: =Parent.TemplateHeight - 1
+            ZIndex: =3
+
+        Label8_2 As label:
+            FontWeight: =FontWeight.Bold
+            Height: =41
+            OnSelect: =Select(Parent)
+            Size: =12
+            Text: =ThisItem.Title
+            Width: =128
+            X: =87
+            Y: =15
+            ZIndex: =4
+
+        Icon5_2 As icon.Add:
+            Color: =RGBA(0, 0, 0, 1)
+            Height: =40
+            Icon: =ThisItem.Icon
+            OnSelect: =ThisItem.Title
+            Width: =40
+            X: =31
+            Y: =14
+            ZIndex: =5
+
+    Label3_3 As label:
+        Color: =RGBA(230, 230, 230, 1)
+        FontWeight: =FontWeight.Semibold
+        Height: =42
+        Size: =15
+        Text: =Text(Now(),DateTimeFormat.LongDate)
+        Width: =320
+        X: =576
+        Y: =28
+        ZIndex: =6
+
+    "'Calendar icon_3' As icon.CalendarBlank":
+        Color: =RGBA(230, 230, 230, 1)
+        Height: =37
+        HoverBorderColor: =//ColorFade(Self.BorderColor, 20%)
+        Icon: =Icon.CalendarBlank
+        Width: =35
+        X: =532
+        Y: =30
+        ZIndex: =7
+
+    Icon2_4 As icon.Reload:
+        Color: =RGBA(230, 230, 230, 1)
+        Height: =33
+        Icon: =Icon.Reload
+        OnSelect: =Refresh(Clockin);
+        Width: =33
+        X: =1297
+        Y: =21
+        ZIndex: =8
+

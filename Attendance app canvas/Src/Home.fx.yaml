@@ -1,0 +1,266 @@
+Home As screen:
+    Fill: =RGBA(204, 204, 204, 1)
+
+    Image6 As image:
+        Height: =768
+        Image: ='pexels-cottonbro-studio-4065617'
+        ImagePosition: =ImagePosition.Fill
+        Width: =596
+        X: =770
+        ZIndex: =1
+
+    Icon2 As icon.Reload:
+        Color: =RGBA(0, 0, 0, 1)
+        Height: =30
+        Icon: =Icon.Reload
+        OnSelect: =Refresh(Clockin);
+        Width: =30
+        X: =1310
+        Y: =29
+        ZIndex: =5
+
+    Rectangle1 As rectangle:
+        Fill: =RGBA(230, 230, 230, 1)
+        Height: =529
+        Width: =475
+        X: =832
+        Y: =190
+        ZIndex: =6
+
+    Label5 As label:
+        Fill: =RGBA(230, 230, 230, 1)
+        Font: =Font.Lato
+        FontWeight: =FontWeight.Bold
+        Height: =42
+        Size: =16
+        Text: ="Login to Timesheet *"
+        Width: =209
+        X: =832
+        Y: =144
+        ZIndex: =7
+
+    Icon3 As icon.LogJournal:
+        Color: =RGBA(0, 94, 146, 1)
+        Height: =50
+        Icon: =Icon.LogJournal
+        Width: =50
+        X: =1036
+        Y: =227
+        ZIndex: =8
+
+    Label6_1 As label:
+        FontWeight: =FontWeight.Semibold
+        Height: =41
+        Text: ="Name"
+        Width: =81
+        X: =898
+        Y: =325
+        ZIndex: =10
+
+    Image1 As image:
+        Height: =20
+        Image: ='doubts-button'
+        Width: =20
+        X: =954
+        Y: =336
+        ZIndex: =11
+
+    ComboBox1_1 As combobox:
+        ChevronBackground: =RGBA(0, 121, 187, 1)
+        DefaultSelectedItems: |-
+            =Office365Users.SearchUser({searchTerm:User().FullName})
+        DisplayFields: =["DisplayName"]
+        DisplayMode: =If(IsAdmin,DisplayMode.Edit,DisplayMode.Disabled)
+        IsSearchable: =false
+        Items: |-
+            =Office365Users.SearchUser({searchTerm:ComboBox1_1.SearchText})
+        SearchFields: =["DisplayName"]
+        SearchItems: =[]
+        SelectMultiple: =false
+        X: =905
+        Y: =366
+        ZIndex: =14
+
+    Button2 As button:
+        Fill: =RGBA(0, 121, 187, 1)
+        OnSelect: |-
+            =
+            Navigate(Login)
+        Text: ="Login"
+        X: =983
+        Y: =434
+        ZIndex: =15
+
+    Container1 As groupContainer.manualLayoutContainer:
+        Height: =768
+        Width: =770
+        ZIndex: =16
+
+        Image5 As image:
+            Height: =768
+            Image: ='Simple Pic 11'
+            ImagePosition: =ImagePosition.Fill
+            Width: =770
+            ZIndex: =1
+
+        Circle1 As circle:
+            BorderColor: =RGBA(50, 86, 160, 1)
+            Fill: =RGBA(0, 94, 146, 1)
+            Height: =300
+            Width: =300
+            X: =219
+            Y: =213
+            ZIndex: =2
+
+        Label1 As label:
+            Align: =Align.Center
+            Color: =RGBA(255, 255, 255, 1)
+            Font: =Font.'Lato Black'
+            FontWeight: =FontWeight.Bold
+            Height: =109
+            Size: =35
+            Text: |-
+                =//Text(Now(),DateTimeFormat.ShortTime)
+                CurrentTime
+            Width: =331
+            X: =204
+            Y: =308
+            ZIndex: =3
+
+    Image4 As image:
+        Height: =181
+        Image: ='Alankaeon Logo'
+        Width: =416
+        X: =162
+        Y: =27
+        ZIndex: =17
+
+    Label4 As label:
+        Align: =Align.Center
+        Color: =RGBA(0, 94, 146, 1)
+        Fill: =RGBA(230, 230, 230, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =50
+        Size: =18
+        Text: =If(Hour(Now())<12, "Good Morning, ", Hour(Now())<17, "Good Afternoon, ", "Good evening, ")&User().FullName
+        Width: =384
+        X: =894
+        Y: =20
+        ZIndex: =18
+
+    Label3 As label:
+        Color: =RGBA(0, 121, 187, 1)
+        FontWeight: =FontWeight.Semibold
+        Height: =35
+        Size: =14
+        Text: =Text(Now(),DateTimeFormat.LongDate)
+        Width: =301
+        X: =469
+        Y: =716
+        ZIndex: =19
+
+    "'Calendar icon' As icon.CalendarBlank":
+        Color: =RGBA(0, 121, 187, 1)
+        Height: =37
+        HoverBorderColor: =//ColorFade(Self.BorderColor, 20%)
+        Icon: =Icon.CalendarBlank
+        Width: =35
+        X: =425
+        Y: =714
+        ZIndex: =20
+
+    Timer1 As timer:
+        AutoStart: =true
+        Duration: =1000
+        OnTimerEnd: =Set(CurrentTime,Text(Now(),DateTimeFormat.LongTime))
+        Repeat: =true
+        Visible: =false
+        X: =290
+        Y: =168
+        ZIndex: =23
+
+    Label6_2 As label:
+        FontWeight: =FontWeight.Semibold
+        Height: =29
+        Text: ="Manager"
+        Width: =91
+        X: =905
+        Y: =534
+        ZIndex: =24
+
+    Image1_1 As image:
+        Height: =20
+        Image: ='doubts-button'
+        Width: =20
+        X: =988
+        Y: =540
+        ZIndex: =25
+
+    Button4 As button:
+        Fill: =RGBA(0, 121, 187, 1)
+        OnSelect: |-
+            =Set(VarOTP,RandBetween(00000,99999));
+            If(User().Email in LookUp('Admin Table',Title="Admin").'Admin user'.Email,Office365Outlook.SendEmailV2(User().Email,"One time password for your login","Hi"&User().FullName&"<br> You one time password is:  "&VarOTP);Set(VarOtppopup,true);Set(IsAdmin,true),Set(IsAdmin,false));
+            Set(varid,1)
+        Text: ="Login as a Manager"
+        Width: =328
+        X: =905
+        Y: =574
+        ZIndex: =26
+
+    Rectangle3 As rectangle:
+        Fill: =RGBA(1, 1, 1, 0.8)
+        Height: =731
+        Visible: =VarOtppopup
+        Width: =1312
+        X: =28
+        Y: =20
+        ZIndex: =27
+
+    Rectangle4 As rectangle:
+        Fill: =RGBA(255, 255, 255, 1)
+        Height: =356
+        Visible: =VarOtppopup
+        Width: =681
+        X: =327
+        Y: =204
+        ZIndex: =28
+
+    Label12 As label:
+        Align: =Align.Center
+        FontWeight: =FontWeight.Bold
+        Height: =58
+        Size: =18
+        Text: ="Please enter otp for log into your account"
+        Visible: =VarOtppopup
+        Width: =573
+        X: =381
+        Y: =258
+        ZIndex: =29
+
+    TextInput1 As text:
+        Default: =""
+        Height: =49
+        Visible: =VarOtppopup
+        Width: =480
+        X: =425
+        Y: =334
+        ZIndex: =30
+
+    Button5 As button:
+        Fill: =RGBA(0, 121, 187, 1)
+        OnSelect: |-
+            =If(IsAdmin=true,
+                If(Value(TextInput1.Text)=VarOTP,Navigate(Approve),Set(VarWrongPassword,true));
+                ,
+                IsAdmin=false,
+                If(Value(TextInput1.Text)=VarOTP,Navigate(Home),Set(VarWrongPassword,true));
+            );
+            Set(VarOtppopup, false );
+            Reset(TextInput1);
+        Text: ="Click"
+        Visible: =VarOtppopup
+        X: =592
+        Y: =425
+        ZIndex: =31
+
