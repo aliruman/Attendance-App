@@ -13,7 +13,6 @@
     "Button4": 58,
     "Button4_1": 124,
     "Button5": 54,
-    "Button6": 149,
     "Calendar icon": 59,
     "Calendar icon_1": 83,
     "Calendar icon_2": 103,
@@ -153,7 +152,7 @@
   },
   "FunctionParamsInvariantScripts": {},
   "FunctionParamsInvariantScriptsOnInstances": {},
-  "HeaderLastSavedDateTimeUTC": "12/13/2022 07:39:42",
+  "HeaderLastSavedDateTimeUTC": "12/13/2022 07:41:36",
   "IsLegacyComponentAllowGlobalScopeCase": false,
   "LocalConnectionIDReferences": {
     "02e0c1c8-690a-4129-8ea6-ef616e10f7a5": "\"/providers/microsoft.powerapps/apis/shared_sharepointonline/connections/6484cbd182c04aa4a4d7ee0a574076dd\"",
@@ -197,19 +196,19 @@
   "OrderPcfTemplate": {},
   "OrderTemplate": {},
   "OrderXMLTemplate": {
-    "button": 7,
+    "button": 10,
     "camera": 11,
     "checkbox": 12,
     "circle": 6,
-    "combobox": 10,
+    "combobox": 9,
     "gallery": 3,
     "groupContainer": 5,
     "icon": 1,
     "image": 0,
     "label": 2,
     "rectangle": 4,
-    "text": 9,
-    "timer": 8
+    "text": 8,
+    "timer": 7
   },
   "PublishOrderIndices": {
     "All Logins": 0,
@@ -223,7 +222,6 @@
     "Button4": 23,
     "Button4_1": 85,
     "Button5": 19,
-    "Button6": 0,
     "Calendar icon": 24,
     "Calendar icon_1": 31,
     "Calendar icon_2": 50,
